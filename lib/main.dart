@@ -1,4 +1,6 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:y2k/cgpa.dart';
 import 'grade.dart';
 
 void main() {
@@ -19,21 +21,29 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
+  final List<String> chapterTexts = [
+    'Check Your Grade',
+    'Calculate Your CGPA',
+    'Find My Color',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Academy Analyse'),
+        title: Text('Academy Analyser'),
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight),
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          // final chapterNumber = index + 1;
-          // final chapterTitle = '$chapterNumber';
-          final chapterText = '${_getChapterText(index)}';
+      body: CarouselSlider(
+        options: CarouselOptions(
+          height: 250,
+          enlargeCenterPage: true,
+          viewportFraction: 0.9,
+          aspectRatio: 16 / 9,
+          scrollDirection: Axis.horizontal,
+        ),
+        items: chapterTexts.map((chapterText) {
           return GestureDetector(
             onTap: () {
+              final index = chapterTexts.indexOf(chapterText);
               if (index == 0) {
                 Navigator.push(
                   context,
@@ -42,14 +52,15 @@ class MainPage extends StatelessWidget {
                   ),
                 );
               }
-              // else if (index == 1) {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => NumberComparisonGame(),
-              //     ),
-              //   );
-              // } else if (index == 2) {
+              else if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CGPACalculator(),
+                  ),
+                );
+              }
+              // else if (index == 2) {
               //   Navigator.push(
               //     context,
               //     MaterialPageRoute(
@@ -59,30 +70,28 @@ class MainPage extends StatelessWidget {
               // }
             },
             child: Container(
-              margin: EdgeInsets.all(30),
+              margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
                   colors: [
                     Colors.teal.shade300,
-                    // Colors.teal.shade200,
-                    // Colors.white,
-                    Colors.teal.shade100
+                    Colors.teal.shade100,
                   ],
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
               height: 250,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Text(
-                    //   chapterTitle,
-                    //   style: TextStyle(
-                    //     fontSize: 20,
-                    //     fontWeight: FontWeight.bold,
-                    //     color: Colors.white,
-                    //   ),
-                    // ),
                     SizedBox(height: 8),
                     Text(
                       chapterText,
@@ -97,21 +106,22 @@ class MainPage extends StatelessWidget {
               ),
             ),
           );
-        },
+        }).toList(),
       ),
     );
   }
-
-  String _getChapterText(int index) {
-    switch (index) {
-      case 0:
-        return 'Check Your Grade';
-      case 1:
-        return 'Compare Sum of Two Numbers';
-      case 2:
-        return 'Find My Color';
-      default:
-        return '';
-    }
-  }
 }
+
+  // String _getChapterText(int index) {
+  //   switch (index) {
+  //     case 0:
+  //       return 'Check Your Grade';
+  //     case 1:
+  //       return 'Compare Sum of Two Numbers';
+  //     case 2:
+  //       return 'Find My Color';
+  //     default:
+  //       return '';
+  //   }
+  // }
+
