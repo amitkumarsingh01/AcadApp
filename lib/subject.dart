@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Academy Analyse',
+      title: 'Academy Analyzer',
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
@@ -24,7 +24,7 @@ class MainPage extends StatelessWidget {
   final List<String> chapterTexts = [
     'Check Your Grade',
     'Calculate Your CGPA',
-    'Find My Color',
+    //'Find My Color',
   ];
 
   final CarouselController _carouselController = CarouselController();
@@ -33,18 +33,20 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Academy Analyser'),
+        title: Text('Academy Analyzer'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Explore and Enjoy',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Explore and Enjoy',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -58,7 +60,6 @@ class MainPage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               enableInfiniteScroll: true,
               onPageChanged: (index, reason) {
-                // Handle page change
               },
             ),
             items: chapterTexts.map((chapterText) {

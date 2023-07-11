@@ -1,153 +1,143 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:y2k/cgpa.dart';
-import 'grade.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Academy Analyse',
+      title: 'Google Sign-In Demo',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.blue,
       ),
-      home: MainPage(),
+      home: SignInScreen(),
     );
   }
 }
 
-class MainPage extends StatelessWidget {
-  final List<String> chapterTexts = [
-    'Check Your Grade',
-    'Calculate Your CGPA',
-    //'Find My Color',
-  ];
+class SignInScreen extends StatefulWidget {
+  @override
+  _SignInScreenState createState() => _SignInScreenState();
+}
 
-  final CarouselController _carouselController = CarouselController();
+class _SignInScreenState extends State<SignInScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    checkCurrentUser();
+  }
+
+  Future<void> checkCurrentUser() async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      setState(() {
+        _user = currentUser;
+      });
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser!.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+      await _auth.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      setState(() {
+        _user = user;
+      });
+    } catch (e) {
+      print('Sign in with Google failed: $e');
+    }
+  }
+
+  void signOut() async {
+    try {
+      await _auth.signOut();
+      await _googleSignIn.signOut();
+
+      setState(() {
+        _user = null;
+      });
+    } catch (e) {
+      print('Sign out failed: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Academy Analyser'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Explore and Enjoy',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+    if (_user != null) {
+      // User is signed in, display profile
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Profile'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(_user!.photoURL!),
               ),
-            ),
-          ),
-          CarouselSlider(
-            carouselController: _carouselController,
-            options: CarouselOptions(
-              height: 250,
-              enlargeCenterPage: true,
-              viewportFraction: 0.9,
-              aspectRatio: 16 / 9,
-              scrollDirection: Axis.horizontal,
-              enableInfiniteScroll: true,
-              onPageChanged: (index, reason) {
-              },
-            ),
-            items: chapterTexts.map((chapterText) {
-              return GestureDetector(
-                onTap: () {
-                  final index = chapterTexts.indexOf(chapterText);
-                  if (index == 0) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SliderScreen(),
-                      ),
-                    );
-                  } else if (index == 1) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CGPACalculator(),
-                      ),
-                    );
-                  }
-                  // else if (index == 2) {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => ColorPage(),
-                  //     ),
-                  //   );
-                  // }
-                },
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.teal.shade300,
-                        Colors.teal.shade100,
-                      ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 10,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  height: 250,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 8),
-                        Text(
-                          chapterText,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  _carouselController.previousPage();
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.arrow_forward),
-                onPressed: () {
-                  _carouselController.nextPage();
-                },
+              SizedBox(height: 16),
+              Text('Name: ${_user!.displayName}'),
+              SizedBox(height: 8),
+              Text('Email: ${_user!.email}'),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: signOut,
+                child: Text('Sign Out'),
               ),
             ],
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    } else {
+      // User is not signed in, display sign-in button
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Get Started'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Welcome!',
+                style: TextStyle(fontSize: 24),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: signInWithGoogle,
+                icon: Icon(Icons.login),
+                label: Text('Sign in with Google'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
