@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'cgpa.dart';
 import 'grade.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,19 +23,44 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Academy Analyzer'),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MainPage(),
-            Expanded(
-              child: SubjectCardList(),
-            ),
-          ],
-        ),
+      home: FutureBuilder(
+        future: _auth.signInAnonymously(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            }
+            return HomePage();
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  final CarouselController _carouselController = CarouselController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Academy Analyzer'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MainPage(),
+          Expanded(
+            child: SubjectCardList(),
+          ),
+        ],
       ),
     );
   }
@@ -193,24 +225,110 @@ class SubjectCardList extends StatefulWidget {
 }
 
 class _SubjectCardListState extends State<SubjectCardList> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late User _user;
   List<Subject> subjects = [];
 
-  void addSubjectCard(Subject subject) {
-    setState(() {
-      subjects.add(subject);
-    });
+  @override
+  void initState() {
+    super.initState();
+    _user = _auth.currentUser!;
+    fetchSubjects();
   }
 
-  void editSubjectCard(int index, Subject subject) {
-    setState(() {
-      subjects[index] = subject;
-    });
+  void fetchSubjects() async {
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .collection('subjects')
+          .get();
+      setState(() {
+        subjects = snapshot.docs.map((doc) {
+          final data = doc.data();
+          return Subject(
+            name: data['name'],
+            about: data['about'],
+            cie1: data['cie1'],
+            cie2: data['cie2'],
+            cie3: data['cie3'],
+            aat: data['aat'],
+            quiz: data['quiz'],
+            note: data['note'],
+          );
+        }).toList();
+      });
+    } catch (e) {
+      print('Error fetching subjects: $e');
+    }
   }
 
-  void deleteSubjectCard(int index) {
-    setState(() {
-      subjects.removeAt(index);
-    });
+  void addSubjectCard(Subject subject) async {
+    try {
+      final docRef = await _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .collection('subjects')
+          .add({
+        'name': subject.name,
+        'about': subject.about,
+        'cie1': subject.cie1,
+        'cie2': subject.cie2,
+        'cie3': subject.cie3,
+        'aat': subject.aat,
+        'quiz': subject.quiz,
+        'note': subject.note,
+      });
+      setState(() {
+        subjects.add(subject);
+      });
+      print('Subject added with ID: ${docRef.id}');
+    } catch (e) {
+      print('Error adding subject: $e');
+    }
+  }
+
+  void editSubjectCard(int index, Subject subject) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .collection('subjects')
+          .doc(subjects[index].name)
+          .update({
+        'name': subject.name,
+        'about': subject.about,
+        'cie1': subject.cie1,
+        'cie2': subject.cie2,
+        'cie3': subject.cie3,
+        'aat': subject.aat,
+        'quiz': subject.quiz,
+        'note': subject.note,
+      });
+      setState(() {
+        subjects[index] = subject;
+      });
+      print('Subject edited successfully');
+    } catch (e) {
+      print('Error editing subject: $e');
+    }
+  }
+
+  void deleteSubjectCard(int index) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .collection('subjects')
+          .doc(subjects[index].name)
+          .delete();
+      setState(() {
+        subjects.removeAt(index);
+      });
+    } catch (e) {
+      print('Error deleting subject: $e');
+    }
   }
 
   @override
