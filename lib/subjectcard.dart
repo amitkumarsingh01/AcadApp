@@ -1,3 +1,4 @@
+// This is code for without firebase and which on main.dart with anonymous sign-in.
 // import 'package:flutter/material.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 //
