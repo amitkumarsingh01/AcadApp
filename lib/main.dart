@@ -525,7 +525,7 @@ class SubjectCard extends StatelessWidget {
     );
   }
 }
-
+//
 class EditSubjectCard extends StatefulWidget {
   final Subject subject;
   final Function(Subject) onEdit;
