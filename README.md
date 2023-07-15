@@ -9,7 +9,8 @@ Academy Analyzer is a Flutter-based application designed to help students analyz
 
 ![image](https://github.com/itheaks/AcadApp/assets/134759689/f1ed4669-3c0f-402b-b201-da1ad33d966d)
 
-![image](https://github.com/itheaks/AcadApp/assets/134759689/a0501058-6789-4264-b6e5-692a62766977)
+![image](https://github.com/itheaks/AcadApp/assets/134759689/835a5b9a-cfad-478f-86c7-2d23f381bed6)
+
 
 
 1. **Grade Calculation**: Academy Analyzer provides a feature to calculate grades based on the marks entered by the user. Users can input their subject marks, and the app will calculate the corresponding grades based on a predefined grading system. This feature helps students track their performance and assess their standing in each subject.
