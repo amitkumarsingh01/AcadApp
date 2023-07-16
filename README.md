@@ -51,7 +51,7 @@ To run the Academy Analyzer app on your device, follow these steps:
    flutter run
    ```
 
-7. Academy Analyzer should now be up and running on your device/emulator.
+7. Academy Analyzer should now be up and running on your device or emulator.
 
 ## Credits
 
