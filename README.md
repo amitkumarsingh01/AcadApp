@@ -1,7 +1,7 @@
 
 
 # Academy Analyzer
-##Designed For DSCE Bangalore
+## Designed For DSCE Bangalore
 
 Academy Analyzer is a Flutter-based application designed to help students analyze their academic performance. The app allows users to calculate their grades based on their marks and provides a convenient way to track their CGPA (Cumulative Grade Point Average). With the integration of Firebase, users can securely store their subject data anonymously and access it anytime for modification or deletion.
 
@@ -58,4 +58,4 @@ To run the Academy Analyzer app on your device, follow these steps:
 Academy Analyzer is developed and maintained by Amit Kumar Singh @DSCE Bangalore. We are dedicated to providing a user-friendly and reliable app to help students analyze their academic performance effectively.
 
 
-##Maximize your academic potential with Academy Analyzer and stay on top of your grades and CGPA!
+### Maximize your academic potential with Academy Analyzer and stay on top of your grades and CGPA!
