@@ -45,7 +45,7 @@ To run the Academy Analyzer app on your device, follow these steps:
 
 5. Connect your device or start an emulator.
 
-6. Run the app using the following command:
+6. Run the app using the following commands:
 
    ```
    flutter run
