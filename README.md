@@ -1,5 +1,3 @@
-
-
 # Academy Analyzer
 ## Designed Especially For DSCE Bangalore
 
@@ -19,7 +17,7 @@ Academy Analyzer is a Flutter-based application designed to help students analyz
 
 3. **Subject Card**: Academy Analyzer includes a subject card feature that enables users to store and manage their subject data. Users can create subject cards to input and store subject-specific information such as subject name, marks/grades obtained, and credit hours. The subject cards can be modified or deleted as needed, providing users with a convenient way to organize their academic data.
 
-4. **Firebase Integration**: The app is integrated with Firebase to securely store subject data anonymously. Users can store their subject information on the cloud, ensuring data persistence and accessibility across devices. This integration provides a seamless experience and enables users to access their subject data anytime, anywhere.
+4. **Firebase Integration**: The app is integrated with Firebase to securely store subject data anonymously. Users can store their subject information on the cloud, ensuring data persistence and accessibility across devices. This integration provides a seamless experience and enables users to access their subject data anytime, anywhere. Helpful
 
 ![image](https://github.com/itheaks/AcadApp/assets/134759689/a07873e8-bd4f-42db-a851-69b176233256)
 
