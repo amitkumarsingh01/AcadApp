@@ -21,7 +21,7 @@ Academy Analyzer is a Flutter-based application designed to help students analyz
 
 ![image](https://github.com/itheaks/AcadApp/assets/134759689/a07873e8-bd4f-42db-a851-69b176233256)
 
-6. **User-Friendly Interface**: Academy Analyzer offers a user-friendly interface with intuitive design elements. The app provides a smooth and hassle-free experience for entering, calculating, and managing academic data.
+6. **User-Friendly Interface**: Academy Analyzer offers a user-friendly interface with intuitive design elements. The app provides a smooth and hassle-free experience for entering, calculating, and managing academic data.  yyy
 
 7. **About Page**: The about page provides information about the Academy Analyzer app, its purpose, and the team behind its development.
 
