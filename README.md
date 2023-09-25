@@ -11,7 +11,7 @@ Academy Analyzer is a Flutter-based application designed to help students analyz
 
 
 
-1. **Grade Calculation**: Academy Analyzer provides a feature to calculate grades based on the marks entered by the user. Users can input their subject marks, and the app will calculate the corresponding grades based on a predefined grading system. This feature helps students track their performance and assess their standing in each subject.
+1. **Grade Calculation**: Academy Analyzer provides a feature to calculate grades based on the marks entered by the user. Users can input their subject marks, and the app will calculate the corresponding grades based on a predefined grading system. This feature helps students track their performance and assess their standing for each subject.
 
 2. **CGPA Calculation**: The app also offers a CGPA calculator, allowing users to calculate their Cumulative Grade Point Average. Users can enter their subject grades or marks, and the app will compute the CGPA based on the grading system and credit hours associated with each subject. This functionality provides students with a comprehensive view of their overall academic performance.
 
