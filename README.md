@@ -3,7 +3,7 @@
 ---
 Academy Analyzer is a Flutter-based application designed to help students analyze their academic performance. The app allows users to calculate their grades based on their marks and provides a convenient way to track their CGPA (Cumulative Grade Point Average). With the integration of Firebase, users can securely store their subject data anonymously and access it anytime for modification or deletion.
 
-## Features..
+## Features
 
 ![image](https://github.com/itheaks/AcadApp/assets/134759689/f1ed4669-3c0f-402b-b201-da1ad33d966d)
 
